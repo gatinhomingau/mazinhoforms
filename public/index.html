@@ -1,0 +1,19 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#176b4d"><title>Cliente Fiel - Sorteio Mazinho Solidário</title><link rel="stylesheet" href="style.css"></head>
+<body class="public-body"><main class="mobile-shell">
+<header class="public-header"><span class="logo">CF</span><div><strong>Cliente Fiel</strong><small>Sorteio Mazinho Solidário</small></div></header>
+<div id="loading" class="state-card"><span class="spinner"></span><p>Carregando formulário...</p></div>
+<div id="setup-error" class="state-card" hidden><h1>Configuração pendente</h1><p>O Firebase ainda não foi configurado neste site.</p></div>
+<div id="closed" class="state-card" hidden><h1>Cadastros encerrados</h1><p>Não há cadastro liberado no momento.</p></div>
+<section id="form-screen" class="content" hidden>
+  <div class="campaign-heading"><div><span>Cadastro liberado</span><h1 id="campaign-title"></h1></div><time id="campaign-date"></time></div>
+  <div class="summary"><p id="intro-text"></p><p id="period-line" hidden><strong>Período da promoção:</strong> <span></span></p><strong id="deadline-text" class="deadline"></strong></div>
+  <form id="registration-form" novalidate><div id="form-error" class="alert error" hidden></div>
+    <section class="confirmation"><h2>Regras da promoção</h2><p id="rules-text"></p><label class="check-row"><input type="checkbox" id="rules-accepted" required><span>Estou ciente das regras da promoção Cliente Fiel.</span></label></section>
+    <section class="confirmation compact"><p id="contact-text"></p><label class="check-row"><input type="checkbox" id="contact-accepted" required><span>Li e estou ciente.</span></label></section>
+    <label for="seller-name">Nome do vendedor</label><input id="seller-name" maxlength="120" placeholder="Digite seu nome" autocomplete="name" required><p class="note"><strong>Observação:</strong> <span id="seller-note"></span></p>
+    <div class="label-row"><label for="customers">Clientes e regiões</label><span id="line-count">0 clientes</span></div><textarea id="customers" rows="10" maxlength="50000" placeholder="Pedro de Fortim&#10;Raquel de Fortaleza" required></textarea>
+    <div class="format-help"><strong>Um cliente por linha</strong><span>Exemplo: Pedro de Fortim</span></div><p id="customer-instructions" class="instructions"></p><div id="preview" class="preview" hidden></div><button id="submit-button" class="primary" type="submit">Enviar cadastro</button>
+  </form>
+</section>
+<section id="success-screen" class="success-screen" hidden><span class="success-check">✓</span><p class="success-label">Cadastro enviado</p><h1><span id="success-name"></span>, deu tudo certo!</h1><p>Recebemos <strong id="success-count"></strong> para o sorteio Cliente Fiel.</p><h2>Boa sorte!</h2><div class="success-contact">Em caso de dúvidas, entre em contato com o Antonio pelo WhatsApp:<br><a href="https://wa.me/5585996331479" target="_blank" rel="noopener">(85) 99633-1479</a></div><button id="send-more" class="primary" type="button">Enviar mais nomes</button></section>
+</main><script type="module" src="public-app.js"></script></body></html>
