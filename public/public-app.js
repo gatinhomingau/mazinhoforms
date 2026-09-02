@@ -1,6 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
 import { getFirestore, collection, query, where, limit, getDocs, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
-import { firebaseConfig } from './firebase-config.js';
 
 const $ = selector => document.querySelector(selector);
 const defaults = {
@@ -41,9 +40,10 @@ function renderCampaign() {
   showOnly('form-screen');
 }
 async function start() {
-  if (firebaseConfig.apiKey.startsWith('COLE_') || firebaseConfig.projectId === 'SEU_PROJECT_ID') return showOnly('setup-error');
   try {
-    db = getFirestore(initializeApp(firebaseConfig));
+    const response = await fetch('/__/firebase/init.json');
+    if (!response.ok) throw new Error('Configuração automática indisponível.');
+    db = getFirestore(initializeApp(await response.json()));
     const snapshot = await getDocs(query(collection(db, 'campaigns'), where('isActive', '==', true), limit(1)));
     if (snapshot.empty) return showOnly('closed');
     campaign = { id: snapshot.docs[0].id, data: snapshot.docs[0].data() };

@@ -13,10 +13,7 @@ Versão estática do formulário **Cliente Fiel - Sorteio Mazinho Solidário**. 
 2. Em **Firestore Database**, crie o banco.
 3. Em **Authentication > Sign-in method**, habilite **E-mail/senha**.
 4. Em **Authentication > Users**, crie manualmente o usuário administrador.
-5. Em **Configurações do projeto > Seus aplicativos**, adicione um aplicativo Web.
-6. Copie os valores de `firebaseConfig` para `public/firebase-config.js`.
-
-A configuração web não é uma senha. A proteção está em `firestore.rules` e no login administrativo.
+5. Não é necessário copiar chaves ou editar arquivo de configuração: o próprio Firebase Hosting informa a configuração ao site automaticamente.
 
 ## Vincular e publicar
 
@@ -29,20 +26,10 @@ firebase deploy --only hosting,firestore:rules
 
 Endereços depois da publicação:
 
-- Formulário: `https://SEU_PROJECT_ID.web.app/`
-- Painel: `https://SEU_PROJECT_ID.web.app/admin`
+- Formulário: `https://mazinho-forms.web.app/`
+- Painel: `https://mazinho-forms.web.app/admin`
 
 No painel, entre com o usuário criado no Authentication, crie um dia, edite as informações e clique em **Abrir cadastros**.
-
-## Usar hospedagem estática da Hostinger
-
-Se o destino for a Hostinger, envie **somente o conteúdo da pasta `public`** para `public_html`. O formulário continuará usando Firestore e Authentication. Adicione o domínio da Hostinger em **Firebase Authentication > Settings > Authorized domains**.
-
-As regras devem ser publicadas uma vez:
-
-```bash
-firebase deploy --only firestore:rules
-```
 
 ## Estrutura
 
@@ -50,7 +37,6 @@ firebase deploy --only firestore:rules
 - `public/admin.html`: painel web e mobile
 - `public/public-app.js`: cadastro no Firestore
 - `public/admin-app.js`: campanhas, painel e TXT
-- `public/firebase-config.js`: conexão do projeto
 - `firestore.rules`: segurança dos dados
 - `firebase.json`: configuração do deploy
 

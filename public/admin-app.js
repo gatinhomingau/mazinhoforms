@@ -1,7 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, writeBatch, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
-import { firebaseConfig } from './firebase-config.js';
 
 const $ = selector => document.querySelector(selector);
 const defaults = {
@@ -13,17 +12,25 @@ const defaults = {
   customerInstructions:'Coloque apenas um nome de cliente e sua região por linha. Você pode adicionar quantos nomes precisar. Não coloque ponto ou traço entre os nomes.'
 };
 let auth, db, campaigns = [], selected = null, submissions = [];
-const configured = !firebaseConfig.apiKey.startsWith('COLE_') && firebaseConfig.projectId !== 'SEU_PROJECT_ID';
 const formatDate = value => value ? value.split('-').reverse().join('/') : '';
 const escapeHtml = value => String(value ?? '').replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
 function message(value, type='success') {
   $('#admin-message').textContent=value; $('#admin-message').className=`alert ${type}`; $('#admin-message').hidden=false;
   setTimeout(() => $('#admin-message').hidden=true, 4000);
 }
-if (configured) {
-  const app=initializeApp(firebaseConfig); auth=getAuth(app); db=getFirestore(app);
-  onAuthStateChanged(auth, user => { $('#auth-screen').hidden=!!user; $('#dashboard').hidden=!user; if(user) loadCampaigns(); });
-} else { $('#login-error').textContent='Preencha firebase-config.js antes de acessar o painel.'; $('#login-error').hidden=false; }
+async function startAdmin() {
+  try {
+    const response = await fetch('/__/firebase/init.json');
+    if (!response.ok) throw new Error('Configuração automática indisponível.');
+    const app=initializeApp(await response.json()); auth=getAuth(app); db=getFirestore(app);
+    onAuthStateChanged(auth, user => { $('#auth-screen').hidden=!!user; $('#dashboard').hidden=!user; if(user) loadCampaigns(); });
+  } catch (error) {
+    console.error(error);
+    $('#login-error').textContent='Não foi possível conectar ao Firebase. Publique novamente e atualize a página.';
+    $('#login-error').hidden=false;
+  }
+}
+startAdmin();
 
 $('#login-form').addEventListener('submit', async event => {
   event.preventDefault(); $('#login-error').hidden=true;
